@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://trello.com/power-ups/power-up.css">
+    <script src="https://trello.com/power-ups/power-up.min.js"></script>
+  </head>
+  <body>
+    <button id="auth-btn" type="submit" class="mod-primary">Authorize Access To Trello</button>
+    <script>
+      var Promise = TrelloPowerUp.Promise;
+      var t = TrelloPowerUp.iframe();
+      
+      var trelloAuthUrl = 'https://trello.com/1/authorize?expiration=never&name=Auth%20Example&scope=read,write&key=5eb8ea71d9b63c908af341ff8613b50a&callback_method=fragment&return_url=https%3A%2F%2Fauthorizing-power-ups-example.gomix.me%2Fauth-success.html';
+      
+      var tokenLooksValid = function(token) {
+        return /^[0-9a-f]{64}$/.test(token);
+      }
+
+      document.getElementById('auth-btn').addEventListener('click', function(){
+        t.authorize(trelloAuthUrl, { height: 680, width: 580, validToken: tokenLooksValid })
+        .then(function(token){
+          // store the token in Trello private Power-Up storage
+          return t.set('organization', 'private', 'token', token)
+          .catch(t.NotHandled, function(){
+            // sometimes that may not work
+            // the best example is if this member is a member of the board
+            // but not a member of the team
+            // in that case we fall back to storing it at the board
+            return t.set('board', 'private', 'token', token);
+          })
+        })
+        .then(function(){
+          // now that we have the token we needed lets go on to letting
+          // the user do whatever they need to do.
+          return t.popup({
+            title: 'You are authed!',
+            url: './already-authed.html',
+            height: 411
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

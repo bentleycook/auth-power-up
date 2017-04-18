@@ -1,0 +1,17 @@
+{
+  "name": "Authorizing Example",
+  "details":"",
+  "icon": {
+    "url": "https://cdn.hyperdev.com/07656aca-9ccd-4ad1-823c-dbd039f7fccc%2Fzzz.svg"
+  },
+  "author": "",
+  "capabilities": [
+    "callback",
+    "card-buttons"
+  ],
+  "connectors": {
+    "iframe": {
+      "url": "./index.html"
+    }
+  }
+}

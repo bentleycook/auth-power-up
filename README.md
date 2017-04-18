@@ -1,1 +1,1 @@
-# auth-power-up
+# Gomix Based Power-Up Auth Example
